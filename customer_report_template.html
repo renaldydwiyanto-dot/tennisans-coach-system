@@ -15,6 +15,8 @@
         .container { max-width: 1200px; width: 100%; margin: 0 auto; background: white; min-height: 100vh; display: none; overflow-x: hidden; position: relative; z-index: 1; }
         .report-header { background: linear-gradient(135deg, #536D8A 0%, #F9F7F2 100%); color: #2c3e50; padding: 60px 50px; text-align: center; position: relative; overflow: hidden; }
         .tennisans-logo { width: 120px; height: 120px; margin-bottom: 8px; filter: brightness(0) saturate(100%) invert(22%) sepia(15%) saturate(1067%) hue-rotate(188deg) brightness(93%) contrast(88%); position: relative; z-index: 2; }
+        .brand-img { width: 96px; height: 96px; object-fit: contain; display: inline-block; }
+        .logo-watermark { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-10deg); opacity: 0.06; width: 42vw; max-width: 520px; pointer-events: none; z-index: 0; }
         .report-header h1 { font-size: 3.2em; margin-bottom: 12px; font-weight: 200; letter-spacing: 4px; position: relative; z-index: 2; text-shadow: 0 4px 20px rgba(83, 109, 138, 0.3); }
         .report-header h2 { font-size: 2em; margin-bottom: 8px; font-weight: 300; position: relative; z-index: 2; }
         .report-header p { opacity: 0.9; font-size: 1.2em; font-weight: 300; position: relative; z-index: 2; }
@@ -33,6 +35,7 @@
     </style>
 </head>
 <body>
+    <img src="assets/tennisans-logo.png" alt="Tennisans Logo" class="logo-watermark" onerror="this.remove()">
     <div class="loading" id="loadingScreen">
         <div class="spinner"></div>
         <h2>Loading Your Progress Report...</h2>
@@ -90,6 +93,7 @@
             const html = `
                 <div class="report-header">
                     <div style="margin-bottom:8px; display:flex; align-items:center; justify-content:center; gap:12px; color:#2c3e50;">
+                        <img src="assets/tennisans-logo.png" alt="Tennisans Logo" class="brand-img" onerror="this.style.display='none'">
                         <svg class="tennisans-logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
                             <path d="M20,80 Q30,85 70,85 Q80,80 80,75 Q70,70 30,70 Q20,75 20,80" fill="currentColor" stroke="currentColor" stroke-width="2"/>
                             <rect x="25" y="55" width="35" height="20" rx="2" fill="currentColor"/>
