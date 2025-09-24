@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Redirecting...</title>
+  <meta http-equiv="refresh" content="3">
+  <style>body{font-family:Segoe UI,Arial,sans-serif;background:#F9F7F2;color:#2c3e50;display:flex;align-items:center;justify-content:center;height:100vh;margin:0} .box{background:#fff;padding:24px 28px;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.08);text-align:center}</style>
+</head>
+<body>
+  <div class="box">
+    <div style="margin-bottom:10px;">Redirecting to your report...</div>
+    <div id="status" style="font-size:12px;color:#6c757d;"></div>
+  </div>
+  <script>
+    (function(){
+      try{
+        var params=new URLSearchParams(window.location.search);
+        var d=params.get('d');
+        if(!d){ document.getElementById('status').textContent='Missing data.'; return; }
+        var base=window.location.pathname.substring(0,window.location.pathname.lastIndexOf('/')+1);
+        var target=window.location.origin+base+'customer_report_template.html?d='+encodeURIComponent(d);
+        window.location.replace(target);
+      }catch(e){ document.getElementById('status').textContent='Redirect failed. Please copy this page URL and share directly.'; }
+    })();
+  </script>
+</body>
+</html>
+
+
