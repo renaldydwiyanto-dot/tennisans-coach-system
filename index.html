@@ -7,308 +7,146 @@
     <meta name="description" content="Professional tennis coaching report generator by Tennisans.CRB">
     <meta name="keywords" content="tennis, coaching, report, progress, tennisans, CRB">
     <meta name="author" content="Tennisans.CRB">
-    
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://tennisans-coach.netlify.app/">
-    <meta property="og:title" content="Tennisans Coach Dashboard">
-    <meta property="og:description" content="Professional tennis coaching report generator">
-    
-    <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎾</text></svg>">
-    
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        html {
-            overflow-x: hidden;
-        }
-        
-        body {
-            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
-            background: linear-gradient(135deg, #F9F7F2 0%, #536D8A 100%);
-            min-height: 100vh;
-            color: #2c3e50;
-            position: relative;
-            overflow-x: hidden;
-        }
-        
-        body::before {
-            content: 'TENNISANS.CRB';
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) rotate(-45deg);
-            font-size: 5em;
-            font-weight: 800;
-            color: rgba(83, 109, 138, 0.12);
-            opacity: 0.8;
-            pointer-events: none;
-            z-index: 0;
-            letter-spacing: 12px;
-            white-space: nowrap;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-            position: relative;
-            z-index: 1;
-        }
-        
-        .header {
-            background: white;
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            margin-bottom: 30px;
-            text-align: center;
-        }
-        
-        .main-content {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 30px;
-        }
-        
-        .form-section {
-            background: white;
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-        }
-        
-        .link-section {
-            background: white;
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-        }
-        
-        .form-group {
-            margin-bottom: 25px;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            color: #536D8A;
-        }
-        
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #e9ecef;
-            border-radius: 10px;
-            font-size: 14px;
-            transition: all 0.3s ease;
-        }
-        
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: #536D8A;
-            box-shadow: 0 0 0 3px rgba(83, 109, 138, 0.1);
-        }
-        
-        .form-group textarea {
-            min-height: 100px;
-            resize: vertical;
-        }
-        
-        .btn {
-            background: linear-gradient(135deg, #536D8A, #F9F7F2);
-            color: #2c3e50;
-            border: 2px solid #536D8A;
-            padding: 15px 30px;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            width: 100%;
-            margin-top: 20px;
-        }
-        
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(83, 109, 138, 0.2);
-        }
-        
-        .generated-links {
-            margin-top: 30px;
-            padding: 25px;
-            background: #f8f9fa;
-            border-radius: 15px;
-            border-left: 6px solid #536D8A;
-        }
-        
-        .link-item {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-        }
-        
-        .link-label {
-            font-weight: 600;
-            color: #536D8A;
-            margin-bottom: 8px;
-        }
-        
-        .link-url {
-            background: #f8f9fa;
-            padding: 12px;
-            border-radius: 8px;
-            font-family: monospace;
-            font-size: 12px;
-            word-break: break-all;
-            border: 1px solid #dee2e6;
-        }
-        
-        .copy-btn {
-            background: #28a745;
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 5px;
-            font-size: 12px;
-            cursor: pointer;
-            margin-top: 8px;
-            transition: all 0.3s ease;
-        }
-        
-        .copy-btn:hover {
-            background: #218838;
-        }
-        
-        .copy-btn.copied {
-            background: #007bff;
-        }
-        
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-        
-        .stat-card {
-            background: white;
-            padding: 25px;
-            border-radius: 15px;
-            text-align: center;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-        }
-        
-        .stat-number {
-            font-size: 2.5em;
-            font-weight: 700;
-            color: #536D8A;
-            margin-bottom: 5px;
-        }
-        
-        .stat-label {
-            color: #6c757d;
-            font-size: 0.9em;
-        }
-        
-        .success-message {
-            background: #d4edda;
-            color: #155724;
-            padding: 15px 20px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            border: 1px solid #c3e6cb;
-            display: none;
-        }
-        
-        .error-message {
-            background: #f8d7da;
-            color: #721c24;
-            padding: 15px 20px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            border: 1px solid #f5c6cb;
-            display: none;
-        }
-        
-        .loading {
-            display: none;
-            text-align: center;
-            padding: 20px;
-        }
-        
-        .spinner {
-            width: 30px;
-            height: 30px;
-            border: 3px solid rgba(83, 109, 138, 0.3);
-            border-top: 3px solid #536D8A;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 15px;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        .preview-section {
-            margin-top: 30px;
-            padding: 25px;
-            background: linear-gradient(135deg, #536D8A 0%, #F9F7F2 100%);
-            border-radius: 15px;
-            color: #2c3e50;
-        }
-        
-        .preview-btn {
-            background: white;
-            color: #536D8A;
-            border: 2px solid white;
-            padding: 12px 25px;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-right: 10px;
-        }
-        
-        .preview-btn:hover {
-            background: #536D8A;
-            color: white;
-        }
-        
-        @media (max-width: 768px) {
-            .main-content {
-                grid-template-columns: 1fr;
-            }
-            .container {
-                padding: 15px;
-            }
-            .stats-grid {
-                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            }
-            .form-section, .link-section {
-                padding: 25px 20px;
-            }
-            body::before {
-                font-size: 3em;
-                letter-spacing: 8px;
-            }
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { overflow-x: hidden; }
+        body { font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif; background: linear-gradient(135deg, #F9F7F2 0%, #536D8A 100%); min-height: 100vh; color: #2c3e50; position: relative; overflow-x: hidden; }
+        body::before { content: 'TENNISANS.CRB'; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-45deg); font-size: 5em; font-weight: 800; color: rgba(83, 109, 138, 0.12); opacity: 0.8; pointer-events: none; z-index: 0; letter-spacing: 12px; white-space: nowrap; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; position: relative; z-index: 1; }
+        .header { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); margin-bottom: 30px; text-align: center; }
+        .main-content { display: grid; grid-template-columns: 2fr 1fr; gap: 30px; }
+        .form-section { background: white; padding: 40px; border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+        .link-section { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+        .form-group { margin-bottom: 25px; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: 500; color: #536D8A; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 12px 15px; border: 2px solid #e9ecef; border-radius: 10px; font-size: 14px; transition: all 0.3s ease; }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: #536D8A; box-shadow: 0 0 0 3px rgba(83, 109, 138, 0.1); }
+        .form-group textarea { min-height: 100px; resize: vertical; }
+        .btn { background: linear-gradient(135deg, #536D8A, #F9F7F2); color: #2c3e50; border: 2px solid #536D8A; padding: 15px 30px; border-radius: 10px; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; width: 100%; margin-top: 20px; }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(83, 109, 138, 0.2); }
+        .generated-links { margin-top: 30px; padding: 25px; background: #f8f9fa; border-radius: 15px; border-left: 6px solid #536D8A; }
+        .link-item { background: white; padding: 20px; border-radius: 10px; margin-bottom: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .link-label { font-weight: 600; color: #536D8A; margin-bottom: 8px; }
+        .link-url { background: #f8f9fa; padding: 12px; border-radius: 8px; font-family: monospace; font-size: 12px; word-break: break-all; border: 1px solid #dee2e6; }
+        .copy-btn { background: #28a745; color: white; border: none; padding: 8px 15px; border-radius: 5px; font-size: 12px; cursor: pointer; margin-top: 8px; transition: all 0.3s ease; }
+        .copy-btn:hover { background: #218838; }
+        .copy-btn.copied { background: #007bff; }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px; }
+        .stat-card { background: white; padding: 25px; border-radius: 15px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.08); }
+        .stat-number { font-size: 2.5em; font-weight: 700; color: #536D8A; margin-bottom: 5px; }
+        .stat-label { color: #6c757d; font-size: 0.9em; }
+        .success-message { background: #d4edda; color: #155724; padding: 15px 20px; border-radius: 10px; margin-bottom: 20px; border: 1px solid #c3e6cb; display: none; }
+        .error-message { background: #f8d7da; color: #721c24; padding: 15px 20px; border-radius: 10px; margin-bottom: 20px; border: 1px solid #f5c6cb; display: none; }
+        .loading { display: none; text-align: center; padding: 20px; }
+        .spinner { width: 30px; height: 30px; border: 3px solid rgba(83, 109, 138, 0.3); border-top: 3px solid #536D8A; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 15px; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .preview-section { margin-top: 30px; padding: 25px; background: linear-gradient(135deg, #536D8A 0%, #F9F7F2 100%); border-radius: 15px; color: #2c3e50; }
+        .preview-btn { background: white; color: #536D8A; border: 2px solid white; padding: 12px 25px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; margin-right: 10px; }
+        .preview-btn:hover { background: #536D8A; color: white; }
+        @media (max-width: 768px) { .main-content { grid-template-columns: 1fr; } .container { padding: 15px; } .stats-grid { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); } .form-section, .link-section { padding: 25px 20px; } body::before { font-size: 3em; letter-spacing: 8px; } }
     </style>
+    <script>
+        const CONFIG = {
+            reportUrl: (() => {
+                const path = window.location.pathname;
+                const base = path.substring(0, path.lastIndexOf('/') + 1);
+                return window.location.origin + base + 'customer_report_template.html';
+            })()
+        };
+        function uid() { return Math.random().toString(36).slice(2, 8) + Date.now().toString(36).slice(-4); }
+        function saveReport(report) {
+            const id = uid();
+            const all = JSON.parse(localStorage.getItem('tennisansReports') || '{}');
+            all[id] = { ...report, reportId: id, createdAt: new Date().toISOString() };
+            localStorage.setItem('tennisansReports', JSON.stringify(all));
+            const stats = JSON.parse(localStorage.getItem('tennisansStats') || '{}');
+            stats.created = (stats.created || 0) + 1;
+            localStorage.setItem('tennisansStats', JSON.stringify(stats));
+            return id;
+        }
+        function generateLinks(report) {
+            const id = saveReport(report);
+            const localShortLink = `${CONFIG.reportUrl}?r=${encodeURIComponent(id)}`;
+            const encoded = btoa(encodeURIComponent(JSON.stringify(report)));
+            const encodedLink = `${CONFIG.reportUrl}?d=${encoded}`;
+            return { id, localShortLink, encodedLink };
+        }
+        async function shortenClean(longUrl) {
+            try {
+                const isgd = await fetch(`https://is.gd/create.php?format=simple&url=${encodeURIComponent(longUrl)}`);
+                if (isgd.ok) { const txt = await isgd.text(); if (txt && txt.startsWith('http')) return txt.trim(); }
+            } catch(_) {}
+            try {
+                const vgd = await fetch(`https://v.gd/create.php?format=simple&url=${encodeURIComponent(longUrl)}`);
+                if (vgd.ok) { const txt = await vgd.text(); if (txt && txt.startsWith('http')) return txt.trim(); }
+            } catch(_) {}
+            return null;
+        }
+        function copyToClipboard(elementId, btn) {
+            const text = document.getElementById(elementId).textContent.trim();
+            navigator.clipboard.writeText(text).then(() => {
+                btn.classList.add('copied');
+                btn.textContent = '✅ Copied!';
+                setTimeout(() => { btn.classList.remove('copied'); btn.textContent = '📋 Copy'; }, 1500);
+            });
+        }
+        function updateStatsUI() {
+            const stats = JSON.parse(localStorage.getItem('tennisansStats') || '{}');
+            document.getElementById('totalReports').textContent = stats.created || 0;
+            document.getElementById('totalLinks').textContent = stats.created || 0;
+            document.getElementById('totalViews').textContent = stats.views || 0;
+        }
+        function openShortLink() {
+            const clean = document.getElementById('cleanShortLink')?.textContent.trim();
+            const url = clean && clean !== '-' ? clean : document.getElementById('encodedLink').textContent.trim();
+            if (url && url !== '-') window.open(url, '_blank');
+        }
+        function previewReport() {
+            const preview = sessionStorage.getItem('tennisansPreviewLink');
+            if (preview) window.open(preview, '_blank');
+        }
+        window.addEventListener('DOMContentLoaded', () => {
+            updateStatsUI();
+            const form = document.getElementById('reportForm');
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                document.getElementById('successMessage').style.display = 'none';
+                document.getElementById('errorMessage').style.display = 'none';
+                document.getElementById('loadingIndicator').style.display = 'block';
+                const formData = new FormData(form);
+                const data = Object.fromEntries(formData.entries());
+                const links = generateLinks(data);
+                const linkBox = document.getElementById('generatedLinks');
+                const placeholder = document.getElementById('placeholderMessage');
+                // Populate Encoded and Local links immediately
+                document.getElementById('encodedLink').textContent = links.encodedLink;
+                document.getElementById('localShortLink').textContent = links.localShortLink;
+                document.getElementById('whatsappMessage').textContent = `Halo, ini progress report kamu: ${links.encodedLink}`;
+                // Try clean shortener asynchronously (no ads)
+                (async () => {
+                    const clean = await shortenClean(links.encodedLink);
+                    const wrap = document.getElementById('cleanShortWrap');
+                    if (clean) {
+                        document.getElementById('cleanShortLink').textContent = clean;
+                        wrap.style.display = 'block';
+                        // Prefer clean short link in WhatsApp template if available
+                        document.getElementById('whatsappMessage').textContent = `Halo, ini progress report kamu: ${clean}`;
+                    } else { wrap.style.display = 'none'; }
+                })();
+                linkBox.style.display = 'block';
+                placeholder.style.display = 'none';
+                sessionStorage.setItem('tennisansPreviewLink', links.encodedLink);
+                document.getElementById('previewBtn').disabled = false;
+                document.getElementById('testShortBtn').disabled = false;
+                document.getElementById('loadingIndicator').style.display = 'none';
+                const success = document.getElementById('successMessage');
+                success.textContent = 'Report berhasil dibuat dan link siap dibagikan.';
+                success.style.display = 'block';
+                updateStatsUI();
+            });
+        });
+    </script>
 </head>
 <body>
     <div class="container">
@@ -318,176 +156,55 @@
             <h2 style="color: #6c757d; font-size: 1.4em; font-weight: 400; margin-bottom: 15px;">Progress Report Link Generator</h2>
             <div style="background: linear-gradient(135deg, #536D8A, #F9F7F2); height: 4px; width: 100px; margin: 0 auto; border-radius: 2px;"></div>
         </div>
-        
         <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-number" id="totalReports">0</div>
-                <div class="stat-label">Reports Created</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number" id="totalLinks">0</div>
-                <div class="stat-label">Links Generated</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number" id="totalViews">0</div>
-                <div class="stat-label">Report Views</div>
-            </div>
+            <div class="stat-card"><div class="stat-number" id="totalReports">0</div><div class="stat-label">Reports Created</div></div>
+            <div class="stat-card"><div class="stat-number" id="totalLinks">0</div><div class="stat-label">Links Generated</div></div>
+            <div class="stat-card"><div class="stat-number" id="totalViews">0</div><div class="stat-label">Report Views</div></div>
         </div>
-        
         <div class="main-content">
             <div class="form-section">
                 <h2 style="color: #536D8A; margin-bottom: 30px; font-weight: 300;">📝 Create Progress Report</h2>
-                
                 <div class="success-message" id="successMessage"></div>
                 <div class="error-message" id="errorMessage"></div>
-                
                 <form id="reportForm">
-                    <div class="form-group">
-                        <label for="studentName">Student Name *</label>
-                        <input type="text" id="studentName" name="studentName" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="coachName">Coach Name *</label>
-                        <input type="text" id="coachName" name="coachName" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="program">Program</label>
-                        <select id="program" name="program">
-                            <option value="">Select Program</option>
-                            <option value="Beginner Program">Beginner Program</option>
-                            <option value="Intermediate Program">Intermediate Program</option>
-                            <option value="Advanced Program">Advanced Program</option>
-                            <option value="Professional Training">Professional Training</option>
-                            <option value="Junior Development">Junior Development</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="currentLevel">Current Level</label>
-                        <select id="currentLevel" name="currentLevel">
-                            <option value="">Select Level</option>
-                            <option value="Beginner">Beginner</option>
-                            <option value="Elementary">Elementary</option>
-                            <option value="Intermediate">Intermediate</option>
-                            <option value="Advanced">Advanced</option>
-                            <option value="Expert">Expert</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="evaluationPeriod">Evaluation Period</label>
-                        <input type="month" id="evaluationPeriod" name="evaluationPeriod">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="totalSessions">Total Sessions</label>
-                        <input type="number" id="totalSessions" name="totalSessions" min="1">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="forehandAnalysis">Forehand Analysis</label>
-                        <textarea id="forehandAnalysis" name="forehandAnalysis" placeholder="Analyze forehand technique, consistency, power, and areas for improvement..."></textarea>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="backhandAnalysis">Backhand Analysis</label>
-                        <textarea id="backhandAnalysis" name="backhandAnalysis" placeholder="Evaluate backhand development, technique, and progression..."></textarea>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="serveAnalysis">Serve & Return Analysis</label>
-                        <textarea id="serveAnalysis" name="serveAnalysis" placeholder="Assess serve technique, return capabilities, and strategic play..."></textarea>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="volleyAnalysis">Net Play & Volley Assessment</label>
-                        <textarea id="volleyAnalysis" name="volleyAnalysis" placeholder="Evaluate net play skills, volley technique, and court positioning..."></textarea>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="footworkAnalysis">Footwork & Movement Analysis</label>
-                        <textarea id="footworkAnalysis" name="footworkAnalysis" placeholder="Analyze movement patterns, court coverage, and agility..."></textarea>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="mentalAnalysis">Mental Game & Strategic Thinking</label>
-                        <textarea id="mentalAnalysis" name="mentalAnalysis" placeholder="Evaluate mental toughness, strategy understanding, and match play..."></textarea>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="strengths">Current Strengths</label>
-                        <textarea id="strengths" name="strengths" placeholder="Highlight the player's key strengths and achievements..."></textarea>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="areasForImprovement">Areas for Improvement</label>
-                        <textarea id="areasForImprovement" name="areasForImprovement" placeholder="Identify specific areas that need development..."></textarea>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="technicalRecommendations">Technical Recommendations</label>
-                        <textarea id="technicalRecommendations" name="technicalRecommendations" placeholder="Provide specific technical development recommendations..."></textarea>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="practiceRecommendations">Practice Focus</label>
-                        <textarea id="practiceRecommendations" name="practiceRecommendations" placeholder="Suggest practice routines and focus areas..."></textarea>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="nextSteps">Next Steps (one per line)</label>
-                        <textarea id="nextSteps" name="nextSteps" placeholder="List recommended next steps, one per line..."></textarea>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="additionalNotes">Coach's Personal Notes</label>
-                        <textarea id="additionalNotes" name="additionalNotes" placeholder="Add any personal observations or additional notes..."></textarea>
-                    </div>
-                    
+                    <div class="form-group"><label for="studentName">Student Name *</label><input type="text" id="studentName" name="studentName" required></div>
+                    <div class="form-group"><label for="coachName">Coach Name *</label><input type="text" id="coachName" name="coachName" required></div>
+                    <div class="form-group"><label for="program">Program</label><select id="program" name="program"><option value="">Select Program</option><option value="Beginner Program">Beginner Program</option><option value="Intermediate Program">Intermediate Program</option><option value="Advanced Program">Advanced Program</option><option value="Professional Training">Professional Training</option><option value="Junior Development">Junior Development</option></select></div>
+                    <div class="form-group"><label for="currentLevel">Current Level</label><select id="currentLevel" name="currentLevel"><option value="">Select Level</option><option value="Beginner">Beginner</option><option value="Elementary">Elementary</option><option value="Intermediate">Intermediate</option><option value="Advanced">Advanced</option><option value="Expert">Expert</option></select></div>
+                    <div class="form-group"><label for="evaluationPeriod">Evaluation Period</label><input type="month" id="evaluationPeriod" name="evaluationPeriod"></div>
+                    <div class="form-group"><label for="totalSessions">Total Sessions</label><input type="number" id="totalSessions" name="totalSessions" min="1"></div>
+                    <div class="form-group"><label for="forehandAnalysis">Forehand Analysis</label><textarea id="forehandAnalysis" name="forehandAnalysis" placeholder="Analyze forehand..."></textarea></div>
+                    <div class="form-group"><label for="backhandAnalysis">Backhand Analysis</label><textarea id="backhandAnalysis" name="backhandAnalysis" placeholder="Evaluate backhand..."></textarea></div>
+                    <div class="form-group"><label for="serveAnalysis">Serve & Return Analysis</label><textarea id="serveAnalysis" name="serveAnalysis" placeholder="Assess serve & return..."></textarea></div>
+                    <div class="form-group"><label for="volleyAnalysis">Net Play & Volley Assessment</label><textarea id="volleyAnalysis" name="volleyAnalysis" placeholder="Evaluate net play & volley..."></textarea></div>
+                    <div class="form-group"><label for="footworkAnalysis">Footwork & Movement Analysis</label><textarea id="footworkAnalysis" name="footworkAnalysis" placeholder="Analyze movement & agility..."></textarea></div>
+                    <div class="form-group"><label for="mentalAnalysis">Mental Game & Strategic Thinking</label><textarea id="mentalAnalysis" name="mentalAnalysis" placeholder="Evaluate mental game & strategy..."></textarea></div>
+                    <div class="form-group"><label for="strengths">Current Strengths</label><textarea id="strengths" name="strengths" placeholder="Player strengths..."></textarea></div>
+                    <div class="form-group"><label for="areasForImprovement">Areas for Improvement</label><textarea id="areasForImprovement" name="areasForImprovement" placeholder="Development areas..."></textarea></div>
+                    <div class="form-group"><label for="technicalRecommendations">Technical Recommendations</label><textarea id="technicalRecommendations" name="technicalRecommendations" placeholder="Technical focus..."></textarea></div>
+                    <div class="form-group"><label for="practiceRecommendations">Practice Focus</label><textarea id="practiceRecommendations" name="practiceRecommendations" placeholder="Practice routines..."></textarea></div>
+                    <div class="form-group"><label for="nextSteps">Next Steps (one per line)</label><textarea id="nextSteps" name="nextSteps" placeholder="Step 1...\nStep 2..."></textarea></div>
+                    <div class="form-group"><label for="additionalNotes">Coach's Personal Notes</label><textarea id="additionalNotes" name="additionalNotes" placeholder="Additional notes..."></textarea></div>
                     <button type="submit" class="btn">🚀 Generate Report & Links</button>
                 </form>
-                
-                <div class="loading" id="loadingIndicator">
-                    <div class="spinner"></div>
-                    <p>Generating report and creating links...</p>
-                </div>
+                <div class="loading" id="loadingIndicator"><div class="spinner"></div><p>Generating report and creating links...</p></div>
             </div>
-            
             <div class="link-section">
                 <h3 style="color: #536D8A; margin-bottom: 25px; font-weight: 300;">🔗 Share this link with your student:</h3>
-                
                 <div id="placeholderMessage" style="background: #f8f9fa; padding: 25px; border-radius: 15px; text-align: center; border: 2px dashed #dee2e6;">
                     <div style="font-size: 3em; margin-bottom: 15px; opacity: 0.6;">📋</div>
                     <h4 style="color: #6c757d; margin-bottom: 10px;">No Links Generated Yet</h4>
                     <p style="color: #6c757d; font-size: 0.9em;">Fill out the form and click generate to create shareable links</p>
                 </div>
-                
                 <div id="generatedLinks" class="generated-links" style="display: none;">
                     <div style="background: #d4edda; color: #155724; padding: 15px; border-radius: 10px; margin-bottom: 20px; border: 1px solid #c3e6cb;">
                         <strong>✅ Links Ready!</strong> Your report has been generated successfully.
                     </div>
-                    
-                    <div class="link-item">
-                        <div class="link-label">📱 Share Link (Recommended)</div>
-                        <div class="link-url" id="shortLink">-</div>
-                        <button class="copy-btn" onclick="copyToClipboard('shortLink', this)">📋 Copy Link</button>
-                    </div>
-                    
-                    <div class="link-item">
-                        <div class="link-label">📧 WhatsApp Message Template</div>
-                        <div class="link-url" id="whatsappMessage">-</div>
-                        <button class="copy-btn" onclick="copyToClipboard('whatsappMessage', this)">📋 Copy Message</button>
-                    </div>
-                    
-                    <div style="background: rgba(83, 109, 138, 0.1); padding: 15px; border-radius: 10px; margin-top: 20px; border: 1px solid rgba(83, 109, 138, 0.2);">
-                        <p style="color: #536D8A; font-size: 0.95em; margin: 0;">
-                            💡 <strong>Tip:</strong> Student dapat membuka link ini kapan saja untuk melihat progress report mereka
-                        </p>
-                    </div>
+                    <div id="cleanShortWrap" class="link-item" style="display:none;"><div class="link-label">🌍 Clean Short Link (No Ads)</div><div class="link-url" id="cleanShortLink">-</div><button class="copy-btn" onclick="copyToClipboard('cleanShortLink', this)">📋 Copy</button></div>
+                    <div class="link-item"><div class="link-label">🔐 Encoded Link (Recommended)</div><div class="link-url" id="encodedLink">-</div><button class="copy-btn" onclick="copyToClipboard('encodedLink', this)">📋 Copy</button></div>
+                    <div class="link-item"><div class="link-label">💻 Local Short Link (This device)</div><div class="link-url" id="localShortLink">-</div><button class="copy-btn" onclick="copyToClipboard('localShortLink', this)">📋 Copy</button></div>
+                    <div class="link-item"><div class="link-label">📧 WhatsApp Message Template</div><div class="link-url" id="whatsappMessage">-</div><button class="copy-btn" onclick="copyToClipboard('whatsappMessage', this)">📋 Copy</button></div>
                 </div>
-
                 <div class="preview-section">
                     <h4 style="margin-bottom: 15px;">👁️ Preview & Test</h4>
                     <button class="preview-btn" id="previewBtn" onclick="previewReport()" disabled>🔍 Preview Report</button>
@@ -499,12 +216,7 @@
             </div>
         </div>
     </div>
-    
-    <script>
-        // Configuration - FINAL VERSION WITH ROBUST PATH DETECTION
-        const CONFIG = {
-            baseUrl: (() => {
-                const currentPath = window.location.pathname;
-                const basePath = currentPath.substring(0, currentPath.lastIndexOf('/') + 1);
-                return window.location.origin + basePath + 'customer_report_template.html';
-            })
+</body>
+</html>
+
+
