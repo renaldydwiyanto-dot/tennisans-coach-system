@@ -1,0 +1,1017 @@
+function generateReport(data) {
+            try {
+                console.log('Generating report display...');
+                
+                // Validate input data
+                if (!data || typeof data !== 'object') {
+                    throw new Error('Invalid report data provided');
+                }
+                
+                // Ensure required fields have fallback values
+                const safeData = {
+                    studentName: data.studentName || 'Student Name Not Provided',
+                    coachName: data.coachName || 'Coach Name Not Provided',
+                    program: data.program || 'Program Not Specified',
+                    currentLevel: data.currentLevel || 'Level Not Specified',
+                    totalSessions: data.totalSessions || 'Not Specified',
+                    evaluationPeriod: data.evaluationPeriod || null,
+                    ...data // Spread all other properties
+                };
+                
+                const formattedPeriod = safeData.evaluationPeriod ? 
+                    new Date(safeData.evaluationPeriod + '-01').toLocaleDateString('id-ID', {month: '<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tennisans Progress Report</title>
+    <style>
+        /* SEMUA CSS BERADA DI DALAM TAGS <style> - TIDAK AKAN TERLIHAT DI PAGE */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            overflow-x: hidden;
+        }
+        
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            background: linear-gradient(135deg, #F9F7F2 0%, #536D8A 100%);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+            width: 100%;
+            max-width: 100vw;
+        }
+        
+        body::before {
+            content: 'TENNISANS.CRB';
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-45deg);
+            font-size: 5em;
+            font-weight: 800;
+            color: rgba(83, 109, 138, 0.15);
+            opacity: 0.9;
+            pointer-events: none;
+            z-index: 0;
+            letter-spacing: 12px;
+            white-space: nowrap;
+        }
+        
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+            color: white;
+        }
+        
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(255,255,255,0.3);
+            border-top: 5px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            background: white;
+            min-height: 100vh;
+            display: none;
+            overflow-x: hidden;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .report-header {
+            background: linear-gradient(135deg, #536D8A 0%, #F9F7F2 100%);
+            color: #2c3e50;
+            padding: 60px 50px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .tennisans-logo {
+            width: 120px;
+            height: 120px;
+            margin-bottom: 20px;
+            filter: brightness(0) saturate(100%) invert(22%) sepia(15%) saturate(1067%) hue-rotate(188deg) brightness(93%) contrast(88%);
+            position: relative;
+            z-index: 2;
+        }
+        
+        .report-header h1 {
+            font-size: 3.5em;
+            margin-bottom: 15px;
+            font-weight: 200;
+            letter-spacing: 4px;
+            position: relative;
+            z-index: 2;
+            text-shadow: 0 4px 20px rgba(83, 109, 138, 0.3);
+        }
+        
+        .report-header h2 {
+            font-size: 2.2em;
+            margin-bottom: 10px;
+            font-weight: 300;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .report-header p {
+            opacity: 0.9;
+            font-size: 1.4em;
+            font-weight: 300;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .report-content {
+            padding: 50px;
+            max-width: 100%;
+            margin: 0 auto;
+            overflow-x: hidden;
+            word-wrap: break-word;
+        }
+        
+        .profile-section {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+        
+        .profile-card {
+            background: linear-gradient(135deg, #F9F7F2 0%, #e8e8e8 100%);
+            padding: 35px;
+            border-radius: 20px;
+            border-left: 8px solid #536D8A;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        .summary-card {
+            background: linear-gradient(135deg, #F9F7F2 0%, #e8e8e8 100%);
+            padding: 35px;
+            border-radius: 20px;
+            text-align: center;
+            border-left: 8px solid #536D8A;
+            box-shadow: 0 20px 40px rgba(83, 109, 138, 0.1);
+        }
+        
+        .skills-container {
+            margin-bottom: 50px;
+        }
+        
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .skill-card {
+            background: white;
+            padding: 35px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+            position: relative;
+            overflow: hidden;
+            border-left: 6px solid #536D8A;
+            transition: all 0.3s ease;
+        }
+        
+        .skill-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.15);
+        }
+        
+        .skill-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.5), transparent);
+            border-radius: 0 20px 0 100px;
+        }
+        
+        .skill-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .skill-icon {
+            font-size: 2.5em;
+            margin-right: 15px;
+            color: #536D8A;
+        }
+        
+        .skill-title {
+            font-size: 1.4em;
+            font-weight: 500;
+            color: #2c3e50;
+        }
+        
+        .skill-analysis-text {
+            line-height: 1.8;
+            color: #495057;
+            text-align: justify;
+            font-size: 1.05em;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .section-divider {
+            height: 4px;
+            background: linear-gradient(90deg, #536D8A, #F9F7F2, #536D8A);
+            border-radius: 2px;
+            margin: 50px 0;
+            position: relative;
+        }
+        
+        .section-divider::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: 0;
+            right: 0;
+            height: 8px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+            border-radius: 4px;
+            animation: shine 3s ease-in-out infinite;
+        }
+        
+        @keyframes shine {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+        
+        .strength-section, .development-section, .recommendation-section {
+            padding: 50px;
+            border-radius: 25px;
+            margin-bottom: 50px;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid #536D8A;
+        }
+        
+        .strength-section {
+            background: linear-gradient(135deg, #536D8A 0%, #F9F7F2 100%);
+            color: #2c3e50;
+        }
+        
+        .development-section {
+            background: linear-gradient(135deg, #F9F7F2 0%, #536D8A 100%);
+            color: #2c3e50;
+        }
+        
+        .recommendation-section {
+            background: linear-gradient(135deg, #536D8A 0%, #F9F7F2 100%);
+            color: #2c3e50;
+        }
+        
+        .section-title {
+            font-size: 2.2em;
+            font-weight: 300;
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .content-card {
+            background: rgba(83, 109, 138, 0.1);
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            backdrop-filter: blur(10px);
+            position: relative;
+            z-index: 2;
+            border: 1px solid rgba(83, 109, 138, 0.2);
+        }
+        
+        .content-card h4 {
+            font-size: 1.4em;
+            margin-bottom: 15px;
+            font-weight: 400;
+        }
+        
+        .content-card p {
+            line-height: 1.8;
+            font-size: 1.05em;
+            text-align: justify;
+        }
+        
+        .recommendations-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .next-steps-container {
+            background: rgba(83, 109, 138, 0.1);
+            padding: 35px;
+            border-radius: 20px;
+            backdrop-filter: blur(15px);
+            position: relative;
+            z-index: 2;
+            border: 1px solid rgba(83, 109, 138, 0.2);
+        }
+        
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        
+        .step-badge {
+            padding: 15px 20px;
+            border-radius: 12px;
+            border-left: 4px solid #536D8A;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            background: rgba(83, 109, 138, 0.1);
+            border: 1px solid rgba(83, 109, 138, 0.2);
+        }
+        
+        .step-badge:hover {
+            transform: translateX(10px);
+        }
+        
+        .coach-notes-section {
+            background: linear-gradient(135deg, #F9F7F2 0%, #e8e8e8 100%);
+            padding: 50px;
+            border-radius: 25px;
+            border-left: 8px solid #536D8A;
+            margin-bottom: 50px;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid #536D8A;
+        }
+        
+        .coach-notes-section::before {
+            content: '✏️';
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            font-size: 3em;
+            opacity: 0.1;
+        }
+        
+        .footer-section {
+            text-align: center;
+            margin-top: 60px;
+            padding: 60px 50px;
+            background: linear-gradient(135deg, #536D8A 0%, #F9F7F2 100%);
+            color: #2c3e50;
+            border-radius: 25px;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid #536D8A;
+        }
+        
+        .contact-section {
+            background: linear-gradient(135deg, #F9F7F2 0%, #536D8A 100%);
+            color: #2c3e50;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            margin-top: 40px;
+            border: 2px solid #536D8A;
+        }
+        
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+        
+        .contact-card {
+            background: rgba(83, 109, 138, 0.1);
+            padding: 25px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(83, 109, 138, 0.2);
+        }
+        
+        .contact-card:hover {
+            background: rgba(83, 109, 138, 0.2);
+            transform: translateY(-5px);
+        }
+        
+        .error-section {
+            text-align: center;
+            padding: 100px 50px;
+            color: white;
+        }
+        
+        .error-icon {
+            font-size: 5em;
+            margin-bottom: 30px;
+        }
+        
+        .error-title {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            font-weight: 300;
+        }
+        
+        .error-message {
+            font-size: 1.3em;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        
+        @media (max-width: 768px) {
+            .profile-section, .skills-grid, .recommendations-grid {
+                grid-template-columns: 1fr;
+            }
+            .report-content {
+                padding: 30px 20px;
+            }
+            .report-header {
+                padding: 40px 20px;
+            }
+            .report-header h1 {
+                font-size: 2.5em;
+            }
+            body::before {
+                font-size: 2.5em;
+                letter-spacing: 6px;
+                opacity: 0.8;
+            }
+            .container {
+                width: 100vw;
+                max-width: 100vw;
+            }
+            .skills-grid {
+                grid-template-columns: 1fr;
+            }
+            .skill-card {
+                min-width: unset;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="loading" id="loadingScreen">
+        <div class="spinner"></div>
+        <h2>Loading Your Progress Report...</h2>
+        <p>Please wait while we fetch your tennis development analysis</p>
+    </div>
+    
+    <div class="container" id="reportContainer"></div>
+    
+    <script>
+        function getUrlParameter(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+        
+        function loadReportData() {
+            const reportId = getUrlParameter('r') || getUrlParameter('id');
+            const encodedData = getUrlParameter('d') || getUrlParameter('data');
+            
+            console.log('Report loading started...', {
+                reportId: reportId ? 'provided' : 'missing',
+                encodedData: encodedData ? 'provided' : 'missing',
+                urlParams: window.location.search
+            });
+            
+            if (!reportId && !encodedData) {
+                console.error('No report ID or data provided');
+                showError('Invalid Report Link', 'The report link appears to be invalid. Please contact your coach for a new link.');
+                return;
+            }
+            
+            let reportData = null;
+            
+            // Method 1: Try to decode from URL parameter (most reliable)
+            if (encodedData) {
+                console.log('Attempting to decode data from URL...');
+                
+                // Try modern encoding method first
+                try {
+                    const decodedString = decodeURIComponent(atob(encodedData));
+                    reportData = JSON.parse(decodedString);
+                    console.log('✅ Successfully decoded report data (modern method)');
+                } catch (e) {
+                    console.warn('Modern decoding failed, trying legacy method:', e);
+                    
+                    // Try legacy encoding method
+                    try {
+                        reportData = JSON.parse(atob(encodedData));
+                        console.log('✅ Successfully decoded report data (legacy method)');
+                    } catch (e2) {
+                        console.warn('Both decoding methods failed:', e2);
+                        reportData = null;
+                    }
+                }
+            }
+            
+            // Method 2: Fallback to localStorage if URL decoding failed
+            if (!reportData && reportId) {
+                console.log('Attempting to load from localStorage...');
+                try {
+                    const reports = JSON.parse(localStorage.getItem('tennisansReports') || '{}');
+                    reportData = reports[reportId];
+                    if (reportData) {
+                        console.log('✅ Successfully loaded report data from localStorage');
+                    } else {
+                        console.log('Report not found in localStorage');
+                    }
+                } catch (e) {
+                    console.warn('localStorage loading failed:', e);
+                }
+            }
+            
+            // Method 3: Final validation and error handling
+            if (!reportData) {
+                console.error('No report data could be loaded');
+                showError('Report Not Found', 'The requested report could not be found. Please contact your coach for assistance or try the link again.');
+                return;
+            }
+            
+            // Validate essential data
+            if (!reportData.studentName && !reportData.coachName) {
+                console.error('Report data is invalid - missing essential fields');
+                showError('Invalid Report Data', 'The report data appears to be corrupted. Please contact your coach for a new report link.');
+                return;
+            }
+            
+            // Validate report structure
+            if (typeof reportData !== 'object') {
+                console.error('Report data is not a valid object');
+                showError('Invalid Report Format', 'The report format is invalid. Please contact your coach for a corrected link.');
+                return;
+            }
+            
+            console.log('✅ Report data validated successfully', {
+                reportId: reportData.reportId || reportId,
+                studentName: reportData.studentName,
+                coachName: reportData.coachName,
+                hasSkillsData: !!(reportData.forehandAnalysis || reportData.backhandAnalysis || reportData.serveAnalysis)
+            });
+            
+            // Track view statistics (non-critical)
+            try {
+                const stats = JSON.parse(localStorage.getItem('tennisansStats') || '{"views": 0}');
+                stats.views = (stats.views || 0) + 1;
+                localStorage.setItem('tennisansStats', JSON.stringify(stats));
+                console.log('View count updated');
+            } catch (e) {
+                console.log('View tracking failed (non-critical):', e);
+            }
+            
+            // Generate report with loading delay for better UX
+            setTimeout(() => {
+                try {
+                    console.log('Starting report generation...');
+                    generateReport(reportData);
+                    hideLoading();
+                    console.log('✅ Report generated and displayed successfully');
+                } catch (error) {
+                    console.error('Report generation failed:', error);
+                    showError('Report Generation Failed', 'There was an error displaying your report. Please try refreshing the page or contact your coach.');
+                }
+            }, 1200);
+        }
+        
+        function hideLoading() {
+            document.getElementById('loadingScreen').style.display = 'none';
+            document.getElementById('reportContainer').style.display = 'block';
+        }
+        
+        function showError(title, message) {
+            setTimeout(() => {
+                document.getElementById('loadingScreen').innerHTML = `
+                    <div class="error-section">
+                        <div class="error-icon">⚠️</div>
+                        <h2 class="error-title">${title}</h2>
+                        <p class="error-message">${message}</p>
+                        <div style="margin-top: 30px;">
+                            <button onclick="window.location.reload()" style="background: #536D8A; color: white; padding: 12px 25px; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; margin-right: 10px;">
+                                🔄 Retry
+                            </button>
+                            <button onclick="window.history.back()" style="background: #6c757d; color: white; padding: 12px 25px; border: none; border-radius: 8px; cursor: pointer; font-size: 14px;">
+                                ← Go Back
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }, 800);
+        }
+        
+        function generateReport(data) {
+            try {
+                console.log('Generating report display...');
+                
+                // Validate input data
+                if (!data || typeof data !== 'object') {
+                    throw new Error('Invalid report data provided');
+                }
+                
+                // Ensure required fields have fallback values
+                const safeData = {
+                    studentName: data.studentName || 'Student Name Not Provided',
+                    coachName: data.coachName || 'Coach Name Not Provided',
+                    program: data.program || 'Program Not Specified',
+                    currentLevel: data.currentLevel || 'Level Not Specified',
+                    totalSessions: data.totalSessions || 'Not Specified',
+                    evaluationPeriod: data.evaluationPeriod || null,
+                    ...data // Spread all other properties
+                };
+                
+                const formattedPeriod = safeData.evaluationPeriod ? 
+                    new Date(safeData.evaluationPeriod + '-01').toLocaleDateString('id-ID', {month: 'long', year: 'numeric'}) : 
+                    'Periode Belum Ditentukan';
+                
+                console.log('Report data prepared for display');
+                    
+                const reportHtml = `
+                    <div class="report-header">
+                        <div style="margin-bottom: 20px;">
+                            <svg class="tennisans-logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M20,80 Q30,85 70,85 Q80,80 80,75 Q70,70 30,70 Q20,75 20,80" fill="currentColor" stroke="currentColor" stroke-width="2"/>
+                                <rect x="25" y="55" width="35" height="20" rx="2" fill="currentColor"/>
+                                <rect x="55" y="35" width="8" height="25" rx="2" fill="currentColor"/>
+                                <ellipse cx="40" cy="45" rx="8" ry="12" fill="currentColor"/>
+                                <circle cx="42" cy="30" r="6" fill="currentColor"/>
+                                <path d="M36,28 Q42,25 48,28" fill="none" stroke="currentColor" stroke-width="2"/>
+                                <line x1="35" y1="40" x2="65" y2="25" stroke="currentColor" stroke-width="3"/>
+                                <ellipse cx="68" cy="22" rx="8" ry="12" fill="none" stroke="currentColor" stroke-width="3"/>
+                                <g stroke="currentColor" stroke-width="0.5">
+                                    <line x1="62" y1="15" x2="62" y2="29"/>
+                                    <line x1="65" y1="15" x2="65" y2="29"/>
+                                    <line x1="68" y1="15" x2="68" y2="29"/>
+                                    <line x1="71" y1="15" x2="71" y2="29"/>
+                                    <line x1="74" y1="15" x2="74" y2="29"/>
+                                    <line x1="61" y1="18" x2="75" y2="18"/>
+                                    <line x1="61" y1="21" x2="75" y2="21"/>
+                                    <line x1="61" y1="24" x2="75" y2="24"/>
+                                    <line x1="61" y1="27" x2="75" y2="27"/>
+                                </g>
+                                <circle cx="78" cy="15" r="4" fill="currentColor"/>
+                                <path d="M74,15 Q78,12 82,15" fill="none" stroke="white" stroke-width="1"/>
+                                <line x1="38" y1="57" x2="35" y2="75" stroke="currentColor" stroke-width="3"/>
+                                <line x1="42" y1="57" x2="45" y2="75" stroke="currentColor" stroke-width="3"/>
+                                <ellipse cx="33" cy="77" rx="4" ry="2" fill="currentColor"/>
+                                <ellipse cx="47" cy="77" rx="4" ry="2" fill="currentColor"/>
+                            </svg>
+                        </div>
+                        <h1>TENNISANS PREMIUM</h1>
+                        <h2>PROFESSIONAL PROGRESS ANALYSIS</h2>
+                        <p>Comprehensive Player Development Report</p>
+                        <div style="width: 120px; height: 6px; background: linear-gradient(90deg, rgba(83,109,138,0.8), transparent, rgba(83,109,138,0.8)); margin: 30px auto; border-radius: 3px; position: relative; z-index: 2;"></div>
+                    </div>
+                    
+                    <div class="report-content">
+                        ${generateProfileSection(safeData, formattedPeriod)}
+                        ${generateSkillsSection(safeData)}
+                        ${generateStrengthsSection(safeData)}
+                        ${generateDevelopmentSection(safeData)}
+                        ${generateRecommendationsSection(safeData)}
+                        ${generateCoachNotesSection(safeData)}
+                        ${generateFooterSection(safeData)}
+                        ${generateContactSection()}
+                    </div>
+                `;
+                
+                document.getElementById('reportContainer').innerHTML = reportHtml;
+                console.log('✅ Report HTML generated and inserted successfully');
+                
+            } catch (error) {
+                console.error('Critical error in generateReport:', error);
+                throw new Error('Failed to generate report display: ' + error.message);
+            }
+        }
+        
+        function generateProfileSection(data, formattedPeriod) {
+            return `
+                <div class="profile-section">
+                    <div class="profile-card">
+                        <h3 style="color: #536D8A; margin-bottom: 25px; font-size: 1.8em; font-weight: 300;">👤 Player Profile</h3>
+                        <div style="display: grid; gap: 15px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid rgba(83, 109, 138, 0.1);">
+                                <strong style="color: #495057;">Name:</strong> 
+                                <span style="color: #2c3e50; font-weight: 500;">${data.studentName || 'Tidak diisi'}</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid rgba(83, 109, 138, 0.1);">
+                                <strong style="color: #495057;">Program:</strong> 
+                                <span style="color: #2c3e50; font-weight: 500;">${data.program || 'Tidak dipilih'}</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid rgba(83, 109, 138, 0.1);">
+                                <strong style="color: #495057;">Period:</strong> 
+                                <span style="color: #2c3e50; font-weight: 500;">${formattedPeriod}</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid rgba(83, 109, 138, 0.1);">
+                                <strong style="color: #495057;">Sessions:</strong> 
+                                <span style="color: #2c3e50; font-weight: 500;">${data.totalSessions || 'Tidak diisi'}</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid rgba(83, 109, 138, 0.1);">
+                                <strong style="color: #495057;">Coach:</strong> 
+                                <span style="color: #2c3e50; font-weight: 500;">${data.coachName || 'Tidak diisi'}</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 0;">
+                                <strong style="color: #495057;">Level:</strong> 
+                                <span style="background: linear-gradient(135deg, #536D8A, #F9F7F2); color: #2c3e50; padding: 8px 20px; border-radius: 25px; font-size: 0.9em; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; border: 2px solid #536D8A;">${data.currentLevel || 'Tidak diisi'}</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="summary-card">
+                        <h3 style="color: #536D8A; margin-bottom: 25px; font-size: 1.6em; font-weight: 300;">📊 Report Summary</h3>
+                        <div style="text-align: center;">
+                            <div style="font-size: 4em; color: #536D8A; margin-bottom: 20px; text-shadow: 0 0 20px rgba(83, 109, 138, 0.3);">✨</div>
+                            <h4 style="font-size: 1.4em; margin-bottom: 15px; color: #536D8A;">Professional Assessment</h4>
+                            <p style="color: #6c757d; font-size: 1.1em; line-height: 1.6;">Comprehensive technical and tactical analysis with detailed recommendations for continued development</p>
+                            <div style="background: rgba(83, 109, 138, 0.15); padding: 20px; border-radius: 15px; margin-top: 25px; border: 2px solid rgba(83, 109, 138, 0.2);">
+                                <p style="color: #536D8A; font-weight: 600; font-size: 1.1em;">Report Generated</p>
+                                <p style="color: #6c757d; font-size: 1em;">${new Date().toLocaleDateString('id-ID', {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'})}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        function generateSkillsSection(data) {
+            const skills = [
+                { key: 'forehandAnalysis', title: 'Forehand Analysis', icon: '🎯' },
+                { key: 'backhandAnalysis', title: 'Backhand Development', icon: '🎾' },
+                { key: 'serveAnalysis', title: 'Serve & Return Analysis', icon: '⚡' },
+                { key: 'volleyAnalysis', title: 'Net Play & Volley Assessment', icon: '🏃' },
+                { key: 'footworkAnalysis', title: 'Footwork & Movement Analysis', icon: '👟' },
+                { key: 'mentalAnalysis', title: 'Mental Game & Strategic Thinking', icon: '🧠' }
+            ];
+            
+            const hasAnySkillAnalysis = skills.some(skill => data[skill.key]);
+            
+            if (!hasAnySkillAnalysis) {
+                return `
+                    <div class="skills-container">
+                        <div class="section-divider"></div>
+                        <div style="background: linear-gradient(135deg, #fff3cd, #ffeaa7); border: 2px solid #ffecb5; padding: 40px; border-radius: 20px; text-align: center;">
+                            <div style="font-size: 4em; margin-bottom: 20px;">⚠️</div>
+                            <h4 style="color: #856404; margin-bottom: 15px; font-size: 1.6em;">Technical Analysis Pending</h4>
+                            <p style="color: #856404; font-size: 1.1em;">Technical skills analysis belum diisi oleh coach.</p>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            const skillCards = skills
+                .filter(skill => data[skill.key])
+                .map(skill => `
+                    <div class="skill-card">
+                        <div class="skill-header">
+                            <div class="skill-icon">${skill.icon}</div>
+                            <div class="skill-title">${skill.title}</div>
+                        </div>
+                        <div class="skill-analysis-text">${data[skill.key]}</div>
+                    </div>
+                `)
+                .join('');
+            
+            return `
+                <div class="skills-container">
+                    <div class="section-divider"></div>
+                    <h3 style="color: #536D8A; margin-bottom: 40px; font-size: 2.5em; text-align: center; font-weight: 300; position: relative;">
+                        🏆 TECHNICAL SKILLS COMPREHENSIVE ANALYSIS
+                    </h3>
+                    <div class="skills-grid">
+                        ${skillCards}
+                    </div>
+                </div>
+            `;
+        }
+        
+        function generateStrengthsSection(data) {
+            if (!data.strengths) {
+                return `
+                    <div class="strength-section">
+                        <h3 class="section-title">💪 CURRENT STRENGTHS & ACHIEVEMENTS</h3>
+                        <div style="background: rgba(83, 109, 138, 0.1); border: 2px solid rgba(83, 109, 138, 0.2); padding: 40px; border-radius: 20px; text-align: center;">
+                            <div style="font-size: 3em; margin-bottom: 20px;">⏳</div>
+                            <h4 style="color: #536D8A; margin-bottom: 15px; font-size: 1.6em;">Strengths Assessment Pending</h4>
+                            <p style="color: #6c757d; font-size: 1.1em;">Player strengths analysis belum diisi oleh coach.</p>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            return `
+                <div class="strength-section">
+                    <h3 class="section-title">💪 CURRENT STRENGTHS & ACHIEVEMENTS</h3>
+                    <div class="content-card">
+                        <h4>🌟 Key Strengths</h4>
+                        <p>${data.strengths}</p>
+                    </div>
+                </div>
+            `;
+        }
+        
+        function generateDevelopmentSection(data) {
+            if (!data.areasForImprovement) {
+                return `
+                    <div class="development-section">
+                        <h3 class="section-title">🎯 DEVELOPMENT AREAS & FOCUS POINTS</h3>
+                        <div style="background: rgba(83, 109, 138, 0.1); border: 2px solid rgba(83, 109, 138, 0.2); padding: 40px; border-radius: 20px; text-align: center;">
+                            <div style="font-size: 3em; margin-bottom: 20px;">⏳</div>
+                            <h4 style="color: #536D8A; margin-bottom: 15px; font-size: 1.6em;">Development Assessment Pending</h4>
+                            <p style="color: #6c757d; font-size: 1.1em;">Areas for improvement belum diisi oleh coach.</p>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            return `
+                <div class="development-section">
+                    <h3 class="section-title">🎯 DEVELOPMENT AREAS & FOCUS POINTS</h3>
+                    <div class="content-card">
+                        <h4>📈 Areas for Improvement</h4>
+                        <p>${data.areasForImprovement}</p>
+                    </div>
+                </div>
+            `;
+        }
+        
+        function generateRecommendationsSection(data) {
+            const hasRecommendations = data.technicalRecommendations || data.practiceRecommendations || data.nextSteps;
+            
+            if (!hasRecommendations) {
+                return `
+                    <div class="recommendation-section">
+                        <h3 class="section-title">🚀 PROFESSIONAL RECOMMENDATIONS</h3>
+                        <div style="background: rgba(83, 109, 138, 0.1); border: 2px solid rgba(83, 109, 138, 0.2); padding: 40px; border-radius: 20px; text-align: center;">
+                            <div style="font-size: 3em; margin-bottom: 20px;">⏳</div>
+                            <h4 style="color: #536D8A; margin-bottom: 15px; font-size: 1.6em;">Recommendations Pending</h4>
+                            <p style="color: #6c757d; font-size: 1.1em;">Professional recommendations belum diisi oleh coach.</p>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            let content = '<div class="recommendations-grid">';
+            
+            if (data.technicalRecommendations) {
+                content += `
+                    <div class="content-card">
+                        <h4>⚙️ Technical Development</h4>
+                        <p>${data.technicalRecommendations}</p>
+                    </div>
+                `;
+            }
+            
+            if (data.practiceRecommendations) {
+                content += `
+                    <div class="content-card">
+                        <h4>🏃 Practice Focus</h4>
+                        <p>${data.practiceRecommendations}</p>
+                    </div>
+                `;
+            }
+            
+            content += '</div>';
+            
+            if (data.nextSteps) {
+                const steps = data.nextSteps.split('\n').filter(step => step.trim());
+                if (steps.length > 0) {
+                    content += `
+                        <div class="next-steps-container">
+                            <h4 style="color: #536D8A; margin-bottom: 25px; font-size: 1.6em; text-align: center;">🗓️ Recommended Next Steps</h4>
+                            <div class="steps-grid">
+                                ${steps.map((step, index) => `
+                                    <div class="step-badge">
+                                        <strong style="color: #536D8A;">Step ${index + 1}:</strong><br>
+                                        <span style="color: #495057;">${step.trim()}</span>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+            
+            return `
+                <div class="recommendation-section">
+                    <h3 class="section-title">🚀 PROFESSIONAL RECOMMENDATIONS</h3>
+                    ${content}
+                </div>
+            `;
+        }
+        
+        function generateCoachNotesSection(data) {
+            if (!data.additionalNotes) {
+                return `
+                    <div class="coach-notes-section">
+                        <h3 style="color: #536D8A; margin-bottom: 30px; font-size: 2.2em; font-weight: 300; text-align: center;">📝 COACH'S PERSONAL NOTES</h3>
+                        <div style="background: rgba(83, 109, 138, 0.1); border: 2px solid rgba(83, 109, 138, 0.2); padding: 40px; border-radius: 20px; text-align: center;">
+                            <div style="font-size: 3em; margin-bottom: 20px;">⏳</div>
+                            <h4 style="color: #536D8A; margin-bottom: 15px; font-size: 1.6em;">Personal Notes Pending</h4>
+                            <p style="color: #6c757d; font-size: 1.1em;">Coach's personal notes belum ditambahkan.</p>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            return `
+                <div class="coach-notes-section">
+                    <h3 style="color: #536D8A; margin-bottom: 30px; font-size: 2.2em; font-weight: 300; text-align: center;">📝 COACH'S PERSONAL NOTES</h3>
+                    <div style="background: rgba(83, 109, 138, 0.1); border: 2px solid rgba(83, 109, 138, 0.2); padding: 35px; border-radius: 20px; backdrop-filter: blur(15px);">
+                        <div style="line-height: 1.8; color: #495057; text-align: justify; font-size: 1.1em;">
+                            ${data.additionalNotes}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        function generateFooterSection(data) {
+            return `
+                <div class="footer-section">
+                    <div style="font-size: 4em; margin-bottom: 20px; color: #2c3e50;">🏆</div>
+                    <h3 style="font-size: 2.5em; margin-bottom: 20px; font-weight: 300;">Excellence in Tennis Development</h3>
+                    <p style="font-size: 1.3em; opacity: 0.9; max-width: 600px; margin: 0 auto 30px;">
+                        Continue your tennis journey with dedication and focused practice. Every great player started with a single lesson.
+                    </p>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-top: 40px;">
+                        <div style="background: rgba(83, 109, 138, 0.1); padding: 25px; border-radius: 15px; backdrop-filter: blur(10px); border: 1px solid rgba(83, 109, 138, 0.2);">
+                            <h4 style="color: #536D8A; margin-bottom: 10px;">🎯 Focus</h4>
+                            <p style="color: #6c757d; font-size: 0.95em;">Targeted skill development</p>
+                        </div>
+                        <div style="background: rgba(83, 109, 138, 0.1); padding: 25px; border-radius: 15px; backdrop-filter: blur(10px); border: 1px solid rgba(83, 109, 138, 0.2);">
+                            <h4 style="color: #536D8A; margin-bottom: 10px;">💪 Practice</h4>
+                            <p style="color: #6c757d; font-size: 0.95em;">Consistent improvement</p>
+                        </div>
+                        <div style="background: rgba(83, 109, 138, 0.1); padding: 25px; border-radius: 15px; backdrop-filter: blur(10px); border: 1px solid rgba(83, 109, 138, 0.2);">
+                            <h4 style="color: #536D8A; margin-bottom: 10px;">🚀 Growth</h4>
+                            <p style="color: #6c757d; font-size: 0.95em;">Continuous progress</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        function generateContactSection() {
+            return `
+                <div class="contact-section">
+                    <h3 style="font-size: 2em; margin-bottom: 20px; font-weight: 300;">📞 Contact & Support</h3>
+                    <p style="font-size: 1.2em; margin-bottom: 30px; opacity: 0.9;">
+                        For questions about this report or tennis programs
+                    </p>
+                    <div class="contact-grid">
+                        <div class="contact-card">
+                            <div style="font-size: 2em; margin-bottom: 15px;">📱</div>
+                            <h4 style="color: #536D8A; margin-bottom: 8px;">WhatsApp Admin</h4>
+                            <p style="color: #6c757d; font-size: 0.95em; font-weight: 600;">+62 85121197200</p>
+                        </div>
+                        <div class="contact-card">
+                            <div style="font-size: 2em; margin-bottom: 15px;">📧</div>
+                            <h4 style="color: #536D8A; margin-bottom: 8px;">Email</h4>
+                            <p style="color: #6c757d; font-size: 0.95em; font-weight: 600;">tennisans.crb@gmail.com</p>
+                        </div>
+                        <div class="contact-card">
+                            <div style="font-size: 2em; margin-bottom: 15px;">📸</div>
+                            <h4 style="color: #536D8A; margin-bottom: 8px;">Instagram</h4>
+                            <p style="color: #6c757d; font-size: 0.95em; font-weight: 600;">@tennisans.crb</p>
+                        </div>
+                    </div>
+                    <div style="margin-top: 30px; padding: 25px; background: rgba(83, 109, 138, 0.1); border-radius: 15px; text-align: center; border: 2px solid rgba(83, 109, 138, 0.2);">
+                        <h4 style="color: #536D8A; margin-bottom: 10px; font-size: 1.3em;">TENNISANS.CRB</h4>
+                        <p style="color: #6c757d; font-size: 1em; margin: 0;">Your Professional Tennis Development Partner</p>
+                    </div>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>
