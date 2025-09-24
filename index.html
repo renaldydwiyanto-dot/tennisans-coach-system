@@ -79,6 +79,10 @@
         }
         async function shortenClean(longUrl) {
             try {
+                const sc = await fetch(`https://api.shrtco.de/v2/shorten?url=${encodeURIComponent(longUrl)}`);
+                if (sc.ok) { const j = await sc.json(); if (j && j.ok && j.result && j.result.short_link) return `https://${j.result.short_link}`; }
+            } catch(_) {}
+            try {
                 const isgd = await fetch(`https://is.gd/create.php?format=simple&url=${encodeURIComponent(longUrl)}`);
                 if (isgd.ok) { const txt = await isgd.text(); if (txt && txt.startsWith('http')) return txt.trim(); }
             } catch(_) {}
@@ -130,7 +134,7 @@
                 const placeholder = document.getElementById('placeholderMessage');
                 // Build single primary share link first (site short), then upgrade to clean short if available
                 const shareEl = document.getElementById('shareLink');
-                shareEl.textContent = links.localShortLink;
+                shareEl.textContent = 'Shortening...';
                 // Keep alternates listed compactly
                 document.getElementById('altLinks').textContent = `Encoded: ${links.encodedLink}`;
                 const studentName = (data.studentName||'').trim() || 'Student';
@@ -149,6 +153,8 @@
                         document.getElementById('whatsappMessage').textContent = msg2;
                         document.getElementById('altLinks').textContent = `Site Short: ${links.localShortLink} | Encoded: ${links.encodedLink}`;
                     } else {
+                        // Fallback to site short if all services fail
+                        document.getElementById('shareLink').textContent = links.localShortLink;
                         document.getElementById('altLinks').textContent = `Encoded: ${links.encodedLink}`;
                     }
                 })();
