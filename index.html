@@ -104,10 +104,7 @@
         }
         function openShortLink() {
             // Prefer clean short link; fallback to local short link; then encoded link
-            const clean = document.getElementById('cleanShortLink')?.textContent.trim();
-            const local = document.getElementById('localShortLink')?.textContent.trim();
-            const encoded = document.getElementById('encodedLink').textContent.trim();
-            const url = (clean && clean !== '-') ? clean : ((local && local !== '-') ? local : encoded);
+            const url = document.getElementById('shareLink').textContent.trim();
             if (url && url !== '-') window.open(url, '_blank');
         }
         function previewReport() {
@@ -127,9 +124,11 @@
                 const links = generateLinks(data);
                 const linkBox = document.getElementById('generatedLinks');
                 const placeholder = document.getElementById('placeholderMessage');
-                // Populate Encoded and Local links immediately
-                document.getElementById('encodedLink').textContent = links.encodedLink;
-                document.getElementById('localShortLink').textContent = links.localShortLink;
+                // Build single primary share link first (site short), then upgrade to clean short if available
+                const shareEl = document.getElementById('shareLink');
+                shareEl.textContent = links.localShortLink;
+                // Keep alternates listed compactly
+                document.getElementById('altLinks').textContent = `Encoded: ${links.encodedLink}`;
                 const studentName = (data.studentName||'').trim() || 'Student';
                 const coachName = (data.coachName||'').trim() || 'Coach';
                 const message = `Hi ${studentName}! 👋\n\nYour Tennisans progress report is ready! 🎾✨\n\nView your detailed tennis analysis here:\n${links.encodedLink}\n\nThis report includes your technical progress, strengths, and personalized recommendations for improvement.\n\nBest regards,\n${coachName}\nTennisans Coach 🏆\n\n---\nTENNISANS.CRB\nYour Professional Tennis Development Partner`;
@@ -137,15 +136,16 @@
                 // Try clean shortener asynchronously (no ads)
                 (async () => {
                     const clean = await shortenClean(links.encodedLink);
-                    const wrap = document.getElementById('cleanShortWrap');
                     if (clean) {
-                        document.getElementById('cleanShortLink').textContent = clean;
-                        wrap.style.display = 'block';
+                        document.getElementById('shareLink').textContent = clean;
                         const studentName2 = (data.studentName||'').trim() || 'Student';
                         const coachName2 = (data.coachName||'').trim() || 'Coach';
                         const msg2 = `Hi ${studentName2}! 👋\n\nYour Tennisans progress report is ready! 🎾✨\n\nView your detailed tennis analysis here:\n${clean}\n\nThis report includes your technical progress, strengths, and personalized recommendations for improvement.\n\nBest regards,\n${coachName2}\nTennisans Coach 🏆\n\n---\nTENNISANS.CRB\nYour Professional Tennis Development Partner`;
                         document.getElementById('whatsappMessage').textContent = msg2;
-                    } else { wrap.style.display = 'none'; }
+                        document.getElementById('altLinks').textContent = `Site Short: ${links.localShortLink} | Encoded: ${links.encodedLink}`;
+                    } else {
+                        document.getElementById('altLinks').textContent = `Encoded: ${links.encodedLink}`;
+                    }
                 })();
                 linkBox.style.display = 'block';
                 placeholder.style.display = 'none';
@@ -216,10 +216,17 @@
                     <div style="background: #d4edda; color: #155724; padding: 15px; border-radius: 10px; margin-bottom: 20px; border: 1px solid #c3e6cb;">
                         <strong>✅ Links Ready!</strong> Your report has been generated successfully.
                     </div>
-                    <div id="cleanShortWrap" class="link-item" style="display:none;"><div class="link-label">🌍 Clean Short Link (No Ads)</div><div class="link-url" id="cleanShortLink">-</div><button class="copy-btn" onclick="copyToClipboard('cleanShortLink', this)">📋 Copy</button></div>
-                    <div class="link-item"><div class="link-label">🔐 Encoded Link (Recommended)</div><div class="link-url" id="encodedLink">-</div><button class="copy-btn" onclick="copyToClipboard('encodedLink', this)">📋 Copy</button></div>
-                    <div class="link-item"><div class="link-label">💻 Site Short Link</div><div class="link-url" id="localShortLink">-</div><button class="copy-btn" onclick="copyToClipboard('localShortLink', this)">📋 Copy</button></div>
-                    <div class="link-item"><div class="link-label">📧 WhatsApp Message Template</div><div class="link-url" id="whatsappMessage">-</div><button class="copy-btn" onclick="copyToClipboard('whatsappMessage', this)">📋 Copy</button></div>
+                    <div class="link-item">
+                        <div class="link-label">📱 Share Link (Recommended)</div>
+                        <div class="link-url" id="shareLink">-</div>
+                        <button class="copy-btn" onclick="copyToClipboard('shareLink', this)">📋 Copy</button>
+                    </div>
+                    <div class="link-item">
+                        <div class="link-label">📧 WhatsApp Message Template</div>
+                        <div class="link-url" id="whatsappMessage">-</div>
+                        <button class="copy-btn" onclick="copyToClipboard('whatsappMessage', this)">📋 Copy</button>
+                    </div>
+                    <div style="font-size:12px;color:#6c757d;">Alternatives: <span id="altLinks"></span></div>
                 </div>
                 <div class="preview-section">
                     <h4 style="margin-bottom: 15px;">👁️ Preview & Test</h4>
