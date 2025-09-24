@@ -86,6 +86,10 @@
                 const vgd = await fetch(`https://v.gd/create.php?format=simple&url=${encodeURIComponent(longUrl)}`);
                 if (vgd.ok) { const txt = await vgd.text(); if (txt && txt.startsWith('http')) return txt.trim(); }
             } catch(_) {}
+            try {
+                const tiny = await fetch(`https://tinyurl.com/api-create.php?url=${encodeURIComponent(longUrl)}`);
+                if (tiny.ok) { const txt = await tiny.text(); if (txt && txt.startsWith('http')) return txt.trim(); }
+            } catch(_) {}
             return null;
         }
         function copyToClipboard(elementId, btn) {
@@ -135,7 +139,8 @@
                 document.getElementById('whatsappMessage').textContent = message;
                 // Try clean shortener asynchronously (no ads)
                 (async () => {
-                    const clean = await shortenClean(links.encodedLink);
+                    // Prefer shortening the site short link so the final URL is minimal
+                    const clean = await shortenClean(links.localShortLink);
                     if (clean) {
                         document.getElementById('shareLink').textContent = clean;
                         const studentName2 = (data.studentName||'').trim() || 'Student';
