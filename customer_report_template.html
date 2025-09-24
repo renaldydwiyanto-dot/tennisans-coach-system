@@ -14,7 +14,7 @@
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         .container { max-width: 1200px; width: 100%; margin: 0 auto; background: white; min-height: 100vh; display: none; overflow-x: hidden; position: relative; z-index: 1; }
         .report-header { background: linear-gradient(135deg, #536D8A 0%, #F9F7F2 100%); color: #2c3e50; padding: 60px 50px; text-align: center; position: relative; overflow: hidden; }
-        .tennisans-logo { width: 120px; height: 120px; margin-bottom: 20px; filter: brightness(0) saturate(100%) invert(22%) sepia(15%) saturate(1067%) hue-rotate(188deg) brightness(93%) contrast(88%); position: relative; z-index: 2; }
+        .tennisans-logo { width: 120px; height: 120px; margin-bottom: 8px; filter: brightness(0) saturate(100%) invert(22%) sepia(15%) saturate(1067%) hue-rotate(188deg) brightness(93%) contrast(88%); position: relative; z-index: 2; }
         .report-header h1 { font-size: 3.2em; margin-bottom: 12px; font-weight: 200; letter-spacing: 4px; position: relative; z-index: 2; text-shadow: 0 4px 20px rgba(83, 109, 138, 0.3); }
         .report-header h2 { font-size: 2em; margin-bottom: 8px; font-weight: 300; position: relative; z-index: 2; }
         .report-header p { opacity: 0.9; font-size: 1.2em; font-weight: 300; position: relative; z-index: 2; }
@@ -89,7 +89,7 @@
             const nextSteps = steps.length ? `<div class="next-steps-container"><h4 style="color:#536D8A;margin-bottom:18px;text-align:center;">🗓️ Recommended Next Steps</h4><div class="steps-grid">${steps.map((s,i)=>`<div class="step-badge"><strong style="color:#536D8A;">Step ${i+1}:</strong><br><span style="color:#495057;">${s.trim()}</span></div>`).join('')}</div></div>` : '';
             const html = `
                 <div class="report-header">
-                    <div style="margin-bottom:20px;">
+                    <div style="margin-bottom:8px; display:flex; align-items:center; justify-content:center; gap:12px; color:#2c3e50;">
                         <svg class="tennisans-logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
                             <path d="M20,80 Q30,85 70,85 Q80,80 80,75 Q70,70 30,70 Q20,75 20,80" fill="currentColor" stroke="currentColor" stroke-width="2"/>
                             <rect x="25" y="55" width="35" height="20" rx="2" fill="currentColor"/>
@@ -97,6 +97,7 @@
                             <ellipse cx="40" cy="45" rx="8" ry="12" fill="currentColor"/>
                             <circle cx="42" cy="30" r="6" fill="currentColor"/>
                         </svg>
+                        <div style="font-weight:800; letter-spacing:1px;">TENNISANS.CRB</div>
                     </div>
                     <h1>TENNISANS PREMIUM</h1>
                     <h2>PROFESSIONAL PROGRESS ANALYSIS</h2>
@@ -148,17 +149,32 @@
                         <div class="content-card"><p>${data.additionalNotes || 'Personal notes pending.'}</p></div>
                     </div>
                     <div class="footer-section" style="text-align:center;">
-                        <div style="font-size:3em;margin-bottom:12px;color:#2c3e50;">🏆</div>
+                        <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:12px;color:#2c3e50;">
+                            <svg style="width:46px;height:46px;" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M20,80 Q30,85 70,85 Q80,80 80,75 Q70,70 30,70 Q20,75 20,80" fill="currentColor" stroke="currentColor" stroke-width="2"/>
+                                <rect x="25" y="55" width="35" height="20" rx="2" fill="currentColor"/>
+                                <rect x="55" y="35" width="8" height="25" rx="2" fill="currentColor"/>
+                                <ellipse cx="40" cy="45" rx="8" ry="12" fill="currentColor"/>
+                                <circle cx="42" cy="30" r="6" fill="currentColor"/>
+                            </svg>
+                            <div style="font-weight:800; letter-spacing:1px;">TENNISANS.CRB</div>
+                        </div>
                         <h3 style="font-size:2em;margin-bottom:10px;font-weight:300;">Excellence in Tennis Development</h3>
-                        <p style="opacity:.9;">Continue your tennis journey with dedication and focused practice.</p>
+                        <p style="opacity:.9;">Digital-first tennis coaching with professional analysis and clear next steps.</p>
+                        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:24px;">
+                            <div class="content-card"><h4>🎯 Precision Coaching</h4><p>Personalized focus to accelerate progress.</p></div>
+                            <div class="content-card"><h4>📊 Data-Informed</h4><p>Structured assessments and measurable goals.</p></div>
+                            <div class="content-card"><h4>🌐 Always Accessible</h4><p>Your report, anywhere and anytime.</p></div>
+                        </div>
                     </div>
                     <div class="contact-section" style="text-align:center;">
                         <h3 style="font-size:1.6em;margin-bottom:10px;font-weight:300;">📞 Contact & Support</h3>
-                        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-top:16px;">
+                        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:16px;">
                             <div class="content-card"><h4>📱 WhatsApp Admin</h4><p>+62 85121197200</p></div>
                             <div class="content-card"><h4>📧 Email</h4><p>tennisans.crb@gmail.com</p></div>
                             <div class="content-card"><h4>📸 Instagram</h4><p>@tennisans.crb</p></div>
                         </div>
+                        <div style="margin-top:18px;color:#536D8A;font-weight:700;">TENNISANS.CRB — Your Professional Tennis Development Partner</div>
                     </div>
                 </div>`;
             document.getElementById('reportContainer').innerHTML = html;
