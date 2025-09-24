@@ -44,6 +44,9 @@
         .preview-section { margin-top: 30px; padding: 25px; background: linear-gradient(135deg, #536D8A 0%, #F9F7F2 100%); border-radius: 15px; color: #2c3e50; }
         .preview-btn { background: white; color: #536D8A; border: 2px solid white; padding: 12px 25px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; margin-right: 10px; }
         .preview-btn:hover { background: #536D8A; color: white; }
+        /* Image logo support */
+        .brand-img { width: 72px; height: 72px; object-fit: contain; display: inline-block; }
+        .logo-watermark { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-10deg); opacity: 0.06; width: 42vw; max-width: 520px; pointer-events: none; z-index: 0; }
         @media (max-width: 768px) { .main-content { grid-template-columns: 1fr; } .container { padding: 15px; } .stats-grid { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); } .form-section, .link-section { padding: 25px 20px; } body::before { font-size: 3em; letter-spacing: 8px; } }
     </style>
     <script>
@@ -122,7 +125,10 @@
                 // Populate Encoded and Local links immediately
                 document.getElementById('encodedLink').textContent = links.encodedLink;
                 document.getElementById('localShortLink').textContent = links.localShortLink;
-                document.getElementById('whatsappMessage').textContent = `Halo, ini progress report kamu: ${links.encodedLink}`;
+                const studentName = (data.studentName||'').trim() || 'Student';
+                const coachName = (data.coachName||'').trim() || 'Coach';
+                const message = `Hi ${studentName}! 👋\n\nYour Tennisans progress report is ready! 🎾✨\n\nView your detailed tennis analysis here:\n${links.encodedLink}\n\nThis report includes your technical progress, strengths, and personalized recommendations for improvement.\n\nBest regards,\n${coachName}\nTennisans Coach 🏆\n\n---\nTENNISANS.CRB\nYour Professional Tennis Development Partner`;
+                document.getElementById('whatsappMessage').textContent = message;
                 // Try clean shortener asynchronously (no ads)
                 (async () => {
                     const clean = await shortenClean(links.encodedLink);
@@ -130,8 +136,10 @@
                     if (clean) {
                         document.getElementById('cleanShortLink').textContent = clean;
                         wrap.style.display = 'block';
-                        // Prefer clean short link in WhatsApp template if available
-                        document.getElementById('whatsappMessage').textContent = `Halo, ini progress report kamu: ${clean}`;
+                        const studentName2 = (data.studentName||'').trim() || 'Student';
+                        const coachName2 = (data.coachName||'').trim() || 'Coach';
+                        const msg2 = `Hi ${studentName2}! 👋\n\nYour Tennisans progress report is ready! 🎾✨\n\nView your detailed tennis analysis here:\n${clean}\n\nThis report includes your technical progress, strengths, and personalized recommendations for improvement.\n\nBest regards,\n${coachName2}\nTennisans Coach 🏆\n\n---\nTENNISANS.CRB\nYour Professional Tennis Development Partner`;
+                        document.getElementById('whatsappMessage').textContent = msg2;
                     } else { wrap.style.display = 'none'; }
                 })();
                 linkBox.style.display = 'block';
@@ -149,9 +157,12 @@
     </script>
 </head>
 <body>
+    <img src="assets/tennisans-logo.png" alt="Tennisans Logo" class="logo-watermark" onerror="this.remove()">
     <div class="container">
         <div class="header">
-            <div style="font-size: 3em; color: #536D8A; margin-bottom: 15px;">🎾</div>
+            <div style="margin-bottom: 10px;">
+                <img src="assets/tennisans-logo.png" alt="Tennisans Logo" class="brand-img" onerror="this.style.display='none'">
+            </div>
             <h1 style="color: #536D8A; font-size: 2.8em; font-weight: 300; margin-bottom: 8px;">TENNISANS COACH</h1>
             <h2 style="color: #6c757d; font-size: 1.4em; font-weight: 400; margin-bottom: 15px;">Progress Report Link Generator</h2>
             <div style="background: linear-gradient(135deg, #536D8A, #F9F7F2); height: 4px; width: 100px; margin: 0 auto; border-radius: 2px;"></div>
@@ -169,7 +180,7 @@
                 <form id="reportForm">
                     <div class="form-group"><label for="studentName">Student Name *</label><input type="text" id="studentName" name="studentName" required></div>
                     <div class="form-group"><label for="coachName">Coach Name *</label><input type="text" id="coachName" name="coachName" required></div>
-                    <div class="form-group"><label for="program">Program</label><select id="program" name="program"><option value="">Select Program</option><option value="Beginner Program">Beginner Program</option><option value="Intermediate Program">Intermediate Program</option><option value="Advanced Program">Advanced Program</option><option value="Professional Training">Professional Training</option><option value="Junior Development">Junior Development</option></select></div>
+                    <div class="form-group"><label for="program">Program</label><select id="program" name="program"><option value="">Select Program</option><option value="Semi Private Member">Semi Private Member</option><option value="Private Member">Private Member</option></select></div>
                     <div class="form-group"><label for="currentLevel">Current Level</label><select id="currentLevel" name="currentLevel"><option value="">Select Level</option><option value="Beginner">Beginner</option><option value="Elementary">Elementary</option><option value="Intermediate">Intermediate</option><option value="Advanced">Advanced</option><option value="Expert">Expert</option></select></div>
                     <div class="form-group"><label for="evaluationPeriod">Evaluation Period</label><input type="month" id="evaluationPeriod" name="evaluationPeriod"></div>
                     <div class="form-group"><label for="totalSessions">Total Sessions</label><input type="number" id="totalSessions" name="totalSessions" min="1"></div>
